@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:text="网络地址上的声音"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_gravity="left|center_vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/sound"
+            android:scaleType="fitXY"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+        <SeekBar
+            android:id="@+id/bar1"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/play1"
+            android:src="@drawable/play"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="项目空间里存放的声音"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_gravity="left|center_vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/sound"
+            android:scaleType="fitXY"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+        <SeekBar
+            android:id="@+id/bar2"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/play2"
+            android:src="@drawable/play"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="内存卡存储的声音"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:layout_gravity="left|center_vertical"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText,RtlHardcoded" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:background="#ddd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/sound"
+            android:scaleType="fitXY"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+        <SeekBar
+            android:id="@+id/bar3"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/play3"
+            android:src="@drawable/play"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
