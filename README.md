@@ -33,10 +33,10 @@ player2 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSound
 player3 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_FILE,
         Environment.getExternalStorageDirectory() + "/aaa.wav",this);//手机存储卡音频
         
-//播放
-SuSoundManager.getInstance().playOrPauseNetworkSoundAtProgress(player1, (int) player1.getCurrentPosition());//播放网络音频
-SuSoundManager.getInstance().playOrPauseLocalSoundAtProgress(player2, (int) player2.getCurrentPosition());//播放项目音频
-SuSoundManager.getInstance().playOrPauseFileSoundAtProgress(player3, (int) player3.getCurrentPosition());//播放内存卡音频
+//播放或暂停在某一个进度上（一般选择当前播放进度）
+SuSoundManager.getInstance().playOrPauseNetworkSoundAtProgress(player1, (int) player1.getCurrentPosition());//播放或暂停网络音频
+SuSoundManager.getInstance().playOrPauseLocalSoundAtProgress(player2, (int) player2.getCurrentPosition());//播放或暂停项目音频
+SuSoundManager.getInstance().playOrPauseFileSoundAtProgress(player3, (int) player3.getCurrentPosition());//播放或暂停内存卡音频
 
 //扫描内存中所有音频文件
 SuSoundLoader.getInstance().loadFileSounds(this,new LoadSoundCallback() {
