@@ -15,7 +15,7 @@ allprojects {
 ```
 ```java
 dependencies {
-	        implementation 'com.github.1249848166:SuSoundSelector:1.0'
+	        implementation 'com.github.1249848166:SuSoundSelector:1.1'
 	}
 ```
 然后在项目中
