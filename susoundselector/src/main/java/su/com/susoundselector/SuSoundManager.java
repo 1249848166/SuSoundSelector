@@ -2,13 +2,11 @@ package su.com.susoundselector;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.util.LruCache;
 
 import java.io.IOException;
 import java.util.ArrayList;

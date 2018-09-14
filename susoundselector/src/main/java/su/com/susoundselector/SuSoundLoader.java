@@ -62,11 +62,11 @@ public class SuSoundLoader {
                         String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                         SoundData soundData = new SoundData(path, artist, title, duration);
                         list.add(soundData);
-                        CallbackObj callbackObj = new CallbackObj(loadSoundCallback, list);
-                        Message msg = handler.obtainMessage();
-                        msg.obj = callbackObj;
-                        handler.sendMessage(msg);
                     }
+                    CallbackObj callbackObj = new CallbackObj(loadSoundCallback, list);
+                    Message msg = handler.obtainMessage();
+                    msg.obj = callbackObj;
+                    handler.sendMessage(msg);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
