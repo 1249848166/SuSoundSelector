@@ -24,10 +24,14 @@ public class SuSoundLoader {
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            CallbackObj obj= (CallbackObj) msg.obj;
-            List<SoundData> list=obj.getSoundDataList();
-            LoadSoundCallback callback=obj.getLoadSoundCallback();
-            callback.onLoad(list);
+            try {
+                CallbackObj obj = (CallbackObj) msg.obj;
+                List<SoundData> list = obj.getSoundDataList();
+                LoadSoundCallback callback = obj.getLoadSoundCallback();
+                callback.onLoad(list);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     };
 
@@ -47,31 +51,37 @@ public class SuSoundLoader {
     }
 
     public void loadFileSounds(final Context context, final LoadSoundCallback loadSoundCallback) throws NullPointerException{
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                    ContentResolver resolver = context.getContentResolver();
-                    Cursor cursor = resolver.query(uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
-                    List<SoundData> list = new ArrayList<>();
-                    while (cursor.moveToNext()) {
-                        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                        String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                        String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-                        String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                        SoundData soundData = new SoundData(path, artist, title, duration);
-                        list.add(soundData);
+        try {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                        ContentResolver resolver = context.getContentResolver();
+                        Cursor cursor = resolver.query(uri, null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+                        List<SoundData> list = new ArrayList<>();
+                        assert cursor != null;
+                        while (cursor.moveToNext()) {
+                            String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                            String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                            String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+                            String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                            SoundData soundData = new SoundData(path, artist, title, duration);
+                            list.add(soundData);
+                        }
+                        CallbackObj callbackObj = new CallbackObj(loadSoundCallback, list);
+                        Message msg = handler.obtainMessage();
+                        msg.obj = callbackObj;
+                        handler.sendMessage(msg);
+                        cursor.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    CallbackObj callbackObj = new CallbackObj(loadSoundCallback, list);
-                    Message msg = handler.obtainMessage();
-                    msg.obj = callbackObj;
-                    handler.sendMessage(msg);
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     class CallbackObj{

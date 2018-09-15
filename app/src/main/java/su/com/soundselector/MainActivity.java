@@ -19,22 +19,25 @@ import java.util.List;
 
 import su.com.susoundselector.LoadSoundCallback;
 import su.com.susoundselector.MyMediaPlayer;
+import su.com.susoundselector.SelectSoundPanelActivity;
 import su.com.susoundselector.SoundData;
 import su.com.susoundselector.SoundListener;
 import su.com.susoundselector.SuSoundLoader;
 import su.com.susoundselector.SuSoundManager;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,SeekBar.OnSeekBarChangeListener,SoundListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, SoundListener {
 
-    ImageButton play1,play2,play3;
-    SeekBar bar1,bar2,bar3;
+    ImageButton play1, play2, play3;
+    SeekBar bar1, bar2, bar3;
 
     MyMediaPlayer player1;
     MyMediaPlayer player2;
     MyMediaPlayer player3;
 
+    public static final int REQUEST=1;
+
     @SuppressLint("HandlerLeak")
-    Handler handler=new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             try {
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ImageView imageView = imageObj.getImageView();
                 int imageResource = imageObj.getImageResource();
                 imageView.setImageResource(imageResource);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -54,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         try {
-            SuSoundLoader.getInstance().loadFileSounds(this,new LoadSoundCallback() {
+
+            SuSoundLoader.getInstance().loadFileSounds(this, new LoadSoundCallback() {
                 @Override
                 public void onLoad(List<SoundData> datas) {
                     for (SoundData soundData : datas) {
@@ -63,40 +67,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             });
-        }catch (Exception e){
+
+            play1 = findViewById(R.id.play1);
+            play2 = findViewById(R.id.play2);
+            play3 = findViewById(R.id.play3);
+
+            bar1 = findViewById(R.id.bar1);
+            bar2 = findViewById(R.id.bar2);
+            bar3 = findViewById(R.id.bar3);
+
+            player1 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_NETWORK,
+                    "http://bmob-cdn-21427.b0.upaiyun.com/2018/09/07/51f701f3402aae8e807634b54421923a.wav", this);
+            player2 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_LOCAL,
+                    R.raw.sound1 + "", this);
+            player3 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_FILE,
+                    Environment.getExternalStorageDirectory() + "/aaa.wav", this);
+
+            play1.setOnClickListener(this);
+            play2.setOnClickListener(this);
+            play3.setOnClickListener(this);
+
+            bar1.setOnSeekBarChangeListener(this);
+            bar2.setOnSeekBarChangeListener(this);
+            bar3.setOnSeekBarChangeListener(this);
+
+            //startActivityForResult(new Intent(this, SelectSoundPanelActivity.class),REQUEST);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        play1=findViewById(R.id.play1);
-        play2=findViewById(R.id.play2);
-        play3=findViewById(R.id.play3);
-
-        bar1=findViewById(R.id.bar1);
-        bar2=findViewById(R.id.bar2);
-        bar3=findViewById(R.id.bar3);
-
-        player1 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_NETWORK,
-                "http://bmob-cdn-21427.b0.upaiyun.com/2018/09/07/51f701f3402aae8e807634b54421923a.wav",this);
-        player2 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_LOCAL,
-                R.raw.sound1 + "",this);
-        player3 = SuSoundManager.getInstance().getMediaPlayer(MainActivity.this, SuSoundManager.PARAM_FILE,
-                Environment.getExternalStorageDirectory() + "/aaa.wav",this);
-
-        play1.setOnClickListener(this);
-        play2.setOnClickListener(this);
-        play3.setOnClickListener(this);
-
-        bar1.setOnSeekBarChangeListener(this);
-        bar2.setOnSeekBarChangeListener(this);
-        bar3.setOnSeekBarChangeListener(this);
-
     }
 
     //clicklistener
     @Override
     public void onClick(View v) {
-        int i= v.getId();
-        switch (i){
+        int i = v.getId();
+        switch (i) {
             case R.id.play1:
                 SuSoundManager.getInstance().playOrPauseNetworkSoundAtProgress(player1, (int) player1.getCurrentPosition());
                 break;
@@ -122,8 +128,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        int i=seekBar.getId();
-        switch (i){
+        int i = seekBar.getId();
+        switch (i) {
             case R.id.bar1:
                 bar1.setMax((int) player1.getDuration());
                 player1.seekTo(bar1.getProgress());
@@ -148,13 +154,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPlaying(MyMediaPlayer player, long progress) {
         System.out.println("正在播放");
-        if(player.hashCode()==player1.hashCode()){
+        if (player.hashCode() == player1.hashCode()) {
             bar1.setMax((int) player1.getDuration());
             bar1.setProgress((int) player1.getCurrentPosition());
-        }else if(player.hashCode()==player2.hashCode()){
+        } else if (player.hashCode() == player2.hashCode()) {
             bar2.setMax((int) player2.getDuration());
             bar2.setProgress((int) player2.getCurrentPosition());
-        }else if(player.hashCode()==player3.hashCode()){
+        } else if (player.hashCode() == player3.hashCode()) {
             bar3.setMax((int) player3.getDuration());
             bar3.setProgress((int) player3.getCurrentPosition());
         }
@@ -168,11 +174,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onComplete(MyMediaPlayer player) {
         System.out.println("结束播放");
-        if(player.hashCode()==player1.hashCode()){
+        if (player.hashCode() == player1.hashCode()) {
             bar1.setProgress(0);
-        }else if(player.hashCode()==player2.hashCode()){
+        } else if (player.hashCode() == player2.hashCode()) {
             bar2.setProgress(0);
-        }else if(player.hashCode()==player3.hashCode()){
+        } else if (player.hashCode() == player3.hashCode()) {
             bar3.setProgress(0);
         }
     }
@@ -184,8 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClear(List<String> paths) {
-        for(String p:paths){
-            System.out.println("删除了:"+p);
+        for (String p : paths) {
+            System.out.println("删除了:" + p);
         }
     }
 
@@ -193,32 +199,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onChangeState(MyMediaPlayer player, boolean isOn) {
         ImageView imageView = null;
         int imageResource;
-        if(isOn){
-            imageResource=R.drawable.pause;
-            if(player.hashCode()==player1.hashCode()){
-                imageView=play1;
-            }else if(player.hashCode()==player2.hashCode()){
-                imageView=play2;
-            }else if(player.hashCode()==player3.hashCode()){
-                imageView=play3;
+        if (isOn) {
+            imageResource = R.drawable.pause;
+            if (player.hashCode() == player1.hashCode()) {
+                imageView = play1;
+            } else if (player.hashCode() == player2.hashCode()) {
+                imageView = play2;
+            } else if (player.hashCode() == player3.hashCode()) {
+                imageView = play3;
             }
-        }else{
-            imageResource=R.drawable.play;
-            if(player.hashCode()==player1.hashCode()){
-                imageView=play1;
-            }else if(player.hashCode()==player2.hashCode()){
-                imageView=play2;
-            }else if(player.hashCode()==player3.hashCode()){
-                imageView=play3;
+        } else {
+            imageResource = R.drawable.play;
+            if (player.hashCode() == player1.hashCode()) {
+                imageView = play1;
+            } else if (player.hashCode() == player2.hashCode()) {
+                imageView = play2;
+            } else if (player.hashCode() == player3.hashCode()) {
+                imageView = play3;
             }
         }
-        ImageObj imageObj=new ImageObj(imageView,imageResource);
-        Message msg=handler.obtainMessage();
-        msg.obj=imageObj;
+        ImageObj imageObj = new ImageObj(imageView, imageResource);
+        Message msg = handler.obtainMessage();
+        msg.obj = imageObj;
         handler.sendMessage(msg);
     }
 
-    class ImageObj{
+    class ImageObj {
 
         ImageView imageView;
         int imageResource;
@@ -242,6 +248,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         public void setImageResource(int imageResource) {
             this.imageResource = imageResource;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST&&resultCode==RESULT_OK){
+            System.out.println("==========================================================");
+            List<String> paths=data.getStringArrayListExtra("paths");
+            for(String path:paths){
+                System.out.println(path);
+            }
         }
     }
 }
