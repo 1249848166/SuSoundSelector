@@ -15,7 +15,7 @@ allprojects {
 ```
 ```java
 dependencies {
-	        implementation 'com.github.1249848166:SuSoundSelector:1.1'
+	        implementation 'com.github.1249848166:SuSoundSelector:1.2'
 	}
 ```
 然后在项目中
@@ -80,5 +80,21 @@ public void onClear(List<String> paths) {
 public void onChangeState(MyMediaPlayer player, boolean isOn) {
     //这个是额外预留给音乐播放器的回调，isOn判断音乐是否正在播放，可以改变播放按钮图标
 }
+
+//或者在想要跳转到音频选择界面的地方调用
+public static final int REQUEST=1;
+startActivityForResult(new Intent(this, SelectSoundPanelActivity.class),REQUEST);
+//然后在activity的返回中取出选择的音频
+@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST&&resultCode==RESULT_OK){
+            System.out.println("==========================================================");
+            List<String> paths=data.getStringArrayListExtra("paths");
+            for(String path:paths){
+                System.out.println(path);
+            }
+        }
+    }
 ```
 结合进度条进行播放的完整案例请查看app目录下的完整案例实现
