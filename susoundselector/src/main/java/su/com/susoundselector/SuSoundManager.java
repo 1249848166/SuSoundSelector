@@ -89,7 +89,6 @@ public class SuSoundManager {
         player.getMediaPlayer().setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                player.seekTo(0);
                 if(soundListener!=null) {
                     soundListener.onComplete(player);
                     soundListener.onChangeState(player,false);
